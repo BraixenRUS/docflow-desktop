@@ -1,0 +1,17 @@
+# Python / Node
+__pycache__/
+*.pyc
+venv/
+.env
+node_modules/
+dist/
+build/
+
+# IDE & OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Temp data
+*.log
