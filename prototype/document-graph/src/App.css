@@ -223,3 +223,184 @@ button {
   }
 }
 
+/* Статус документа в узле графа */
+.document-node {
+  width: 240px;
+  min-height: 140px;
+  padding: 14px;
+  border: 1px solid #393944;
+  border-radius: 10px;
+  background: #24242b;
+  color: #ececf2;
+  overflow: visible;
+}
+
+.document-node-selected {
+  border-color: #a78bfa;
+  box-shadow: 0 0 0 2px #a78bfa33;
+}
+
+.document-node-type {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 8px;
+  color: #b5b5c5;
+  font-size: 11px;
+}
+
+.document-node-dot {
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--node-color);
+}
+
+.document-node-title {
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.document-node-date {
+  color: #9292a3;
+  font-size: 11px;
+}
+
+.node-status {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid #393944;
+  font-size: 10px;
+  line-height: 1.4;
+  white-space: normal;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.status-dot-active {
+  animation: status-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes status-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+/* Прогресс обработки */
+.progress-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid #343440;
+  border-radius: 10px;
+  background: #202029;
+}
+
+.progress-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.progress-heading span {
+  color: #b6b6c5;
+}
+
+.progress-heading strong {
+  color: #c4b5fd;
+  font-size: 13px;
+}
+
+.progress-track {
+  height: 6px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #393944;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: #a78bfa;
+  transition: width 0.4s ease;
+}
+
+.helper-text {
+  margin: 0;
+  color: #9292a3;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+/* Сообщения о состоянии */
+.notice {
+  padding: 12px;
+  border: 1px solid #393944;
+  border-radius: 9px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.notice-neutral {
+  border-color: #4b4b58;
+  background: #23232c;
+  color: #c4c4d0;
+}
+
+.notice-error {
+  border-color: #713b43;
+  background: #301d24;
+  color: #fca5a5;
+}
+
+.notice-success {
+  border-color: #285b49;
+  background: #192b25;
+  color: #86efac;
+}
+
+.status-label {
+  line-height: 1.5;
+}
+
+.document-card button:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.document-card .secondary-button {
+  margin-top: -12px;
+  background: transparent;
+  color: #a5a5b5;
+}
+
+.document-card .secondary-button:hover {
+  background: #252530;
+  color: #ececf2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .status-dot-active {
+    animation: none;
+  }
+
+  .progress-fill {
+    transition: none;
+  }
+}
