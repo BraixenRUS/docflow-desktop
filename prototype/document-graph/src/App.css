@@ -1,0 +1,225 @@
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  font-family: Inter, "Segoe UI", sans-serif;
+  color: #ececf2;
+  background: #111116;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+button {
+  font: inherit;
+}
+
+.app {
+  min-height: 100vh;
+  background: #111116;
+  color: #ececf2;
+}
+
+.app-header {
+  min-height: 92px;
+  padding: 20px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  border-bottom: 1px solid #292932;
+  background: #17171e;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 23px;
+  font-weight: 650;
+  letter-spacing: -0.5px;
+}
+
+.app-header p {
+  margin: 7px 0 0;
+  color: #9292a3;
+  font-size: 13px;
+}
+
+.app-header > span {
+  padding: 9px 13px;
+  border: 1px solid #343440;
+  border-radius: 8px;
+  background: #202029;
+  color: #c8c8d5;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  height: calc(100vh - 92px);
+  min-height: 500px;
+}
+
+.graph {
+  min-width: 0;
+  min-height: 0;
+  background-color: #111116;
+  background-image: radial-gradient(#30303b 0.8px, transparent 0.8px);
+  background-size: 22px 22px;
+}
+
+.details {
+  padding: 25px 21px;
+  overflow-y: auto;
+  border-left: 1px solid #292932;
+  background: #17171e;
+}
+
+.details h2 {
+  margin: 0 0 24px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.document-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 20px;
+}
+
+.document-badge {
+  align-self: flex-start;
+  padding: 6px 9px;
+  border: 1px solid #45405f;
+  border-radius: 6px;
+  background: #29243d;
+  color: #c4b5fd;
+  font-size: 11px;
+}
+
+.document-card h3 {
+  margin: -6px 0 0;
+  font-size: 21px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.document-field,
+.document-description {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #30303a;
+}
+
+.document-field span,
+.document-description > span {
+  color: #9292a3;
+  font-size: 12px;
+}
+
+.document-field strong {
+  color: #e6e6ed;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.document-description p {
+  margin: 0;
+  color: #c3c3cf;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.document-card button {
+  margin-top: 2px;
+  padding: 11px 14px;
+  border: 1px solid #3c3c4a;
+  border-radius: 8px;
+  background: #252530;
+  color: #e7e7ee;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.document-card button:hover {
+  border-color: #686881;
+  background: #30303d;
+}
+
+.empty-state {
+  padding: 16px;
+  border: 1px dashed #3a3a47;
+  border-radius: 10px;
+  color: #9292a3;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.react-flow__node {
+  transition: box-shadow 0.15s ease;
+}
+
+.react-flow__node.selected {
+  box-shadow: 0 0 0 2px #a78bfa, 0 0 24px #8b5cf633 !important;
+}
+
+.react-flow__controls {
+  overflow: hidden;
+  border: 1px solid #393944;
+  border-radius: 9px;
+  box-shadow: none;
+}
+
+.react-flow__controls-button {
+  border-bottom: 1px solid #393944;
+  background: #202029;
+  fill: #e5e5ed;
+}
+
+.react-flow__controls-button:hover {
+  background: #30303c;
+}
+
+.react-flow__minimap {
+  overflow: hidden;
+  border: 1px solid #393944;
+  border-radius: 9px;
+}
+
+@media (max-width: 760px) {
+  .app-header {
+    padding: 16px;
+  }
+
+  .app-header h1 {
+    font-size: 19px;
+  }
+
+  .workspace {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(380px, 1fr) auto;
+    height: auto;
+    min-height: calc(100vh - 80px);
+  }
+
+  .graph {
+    min-height: 420px;
+  }
+
+  .details {
+    border-top: 1px solid #292932;
+    border-left: 0;
+  }
+}
+
