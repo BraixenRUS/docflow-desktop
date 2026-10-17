@@ -1,0 +1,51 @@
+erDiagram
+    CONNECTION_TYPES {
+        int id "PK"
+        text type_name "UNIQUE"
+        text display_name
+        text description
+        timestamp created_at
+    }
+
+    DOCUMENT_TYPES {
+        int id "PK"
+        varchar name "UNIQUE"
+        varchar category
+        boolean is_active
+    }
+
+    DOCUMENTS {
+        uuid id "PK"
+        text file_path "UNIQUE"
+        varchar original_filename
+        int document_type_id "FK -> DOCUMENT_TYPES.id"
+        text raw_text
+        float confidence_score
+        date extracted_date
+        varchar status
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    ENTITIES {
+        uuid id "PK"
+        uuid document_id "FK -> DOCUMENTS.id"
+        jsonb data "Гибкая структура (Company, Sum)"
+        timestamp created_at
+    }
+
+    CONNECTIONS {
+        uuid id "PK"
+        uuid source_document_id "FK -> DOCUMENTS.id"
+        uuid target_document_id "FK -> DOCUMENTS.id"
+        int connection_type_id "FK -> CONNECTION_TYPES.id"
+        text description
+        float confidence_score
+    }
+
+    DOCUMENT_TYPES ||--o{ DOCUMENTS : "категоризирует"
+    DOCUMENTS ||--|{ ENTITIES : "содержит множество сущностей"
+    CONNECTION_TYPES ||--o{ CONNECTIONS : "определяет тип связи"
+    
+    DOCUMENTS }|--|| CONNECTIONS.source_document_id : "источник"
+    DOCUMENTS }|--|| CONNECTIONS.target_document_id : "цель"
