@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { fetchTasks } from './api';
 import {
   ReactFlow,
   Background,
@@ -21,10 +22,12 @@ const typeColors = {
   'Письмо': '#94a3b8',
   'Доп. соглашение': '#c084fc',
   'Акт сверки': '#818cf8',
+  'Другой': '#94a3b8',
 };
 
 const stages = {
   queued: { label: 'В очереди', color: '#a1a1aa', progress: 0 },
+  processing: { label: 'В обработке', color: '#60a5fa', progress: 50 },
   recognizing: { label: 'Распознавание текста', color: '#60a5fa', progress: 35 },
   analyzing: { label: 'Анализ документа', color: '#a78bfa', progress: 72 },
   completed: { label: 'Обработка завершена', color: '#34d399', progress: 100 },
@@ -45,7 +48,8 @@ const initialDocuments = [
 ];
 
 function DocumentNode({ data, selected }) {
-  const stage = stages[data.status];
+  const stage = stages[data.status] || stages.queued;
+  const isActive = ['processing', 'recognizing', 'analyzing'].includes(data.status);
 
   return (
     <div
@@ -106,25 +110,65 @@ function getProgress(status) {
 export default function App() {
   const [documents, setDocuments] = useState(initialDocuments);
   const [selectedId, setSelectedId] = useState(null);
+  const [apiError, setApiError] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedType, setSelectedType] = useState('all');
+  const [selectedStatus, setSelectedStatus] = useState('all');
+  const [selectedDate, setSelectedDate] = useState('all');
+
+  useEffect(() => {
+    let active = true;
+
+    const loadTasks = async () => {
+      try {
+        const tasks = await fetchTasks();
+
+        if (active) {
+          setDocuments((current) => {
+            const demoDocuments = current.filter((doc) => doc.source !== 'api');
+            return [...demoDocuments, ...tasks];
+          });
+
+          setApiError('');
+        }
+      } catch (error) {
+        if (active) {
+          setApiError('Не удалось получить данные с сервера.');
+          console.error(error);
+        }
+      }
+    };
+
+    loadTasks();
+
+    const interval = setInterval(loadTasks, 3000);
+
+    return () => {
+      active = false;
+      clearInterval(interval);
+    };
+  }, []);
 
   const selectedDocument = documents.find((doc) => doc.id === selectedId);
   const processingCount = documents.filter(
-    (doc) => ['queued', 'recognizing', 'analyzing'].includes(doc.status)
+    (doc) => ['queued', 'processing', 'recognizing', 'analyzing'].includes(doc.status)
   ).length;
+  const availableTypes = [...new Set(documents.map((doc) => doc.type))];
+  const availableDates = [...new Set(documents.map((doc) => doc.date))];
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setDocuments((current) =>
-        current.map((doc) => {
-          if (doc.status === 'recognizing') return { ...doc, status: 'analyzing' };
-          if (doc.status === 'analyzing') return { ...doc, status: 'completed' };
-          return doc;
-        })
-      );
-    }, 12000);
+  const filteredDocuments = documents.filter((doc) => {
+    const query = searchQuery.trim().toLowerCase();
+    const matchesSearch =
+      !query ||
+      doc.label.toLowerCase().includes(query) ||
+      doc.description.toLowerCase().includes(query);
 
-    return () => clearInterval(timer);
-  }, []);
+    const matchesType = selectedType === 'all' || doc.type === selectedType;
+    const matchesStatus = selectedStatus === 'all' || doc.status === selectedStatus;
+    const matchesDate = selectedDate === 'all' || doc.date === selectedDate;
+
+    return matchesSearch && matchesType && matchesStatus && matchesDate;
+  });
 
   const updateStatus = (id, status) => {
     setDocuments((current) =>
@@ -136,21 +180,31 @@ export default function App() {
     updateStatus(id, 'recognizing');
   };
 
-  const nodes = positions.map(({ id, x, y }) => {
-    const doc = documents.find((item) => item.id === id);
+  const nodes = filteredDocuments.map((doc, index) => {
+    const presetPosition = positions.find((pos) => pos.id === doc.id);
+    const position = presetPosition
+      ? { x: presetPosition.x, y: presetPosition.y }
+      : { x: (index % 4) * 300, y: 650 + Math.floor(index / 4) * 200 };
+
     return {
-      id,
+      id: doc.id,
       type: 'document',
-      position: { x, y },
+      position,
+      selected: doc.id === selectedId,
       data: {
         label: doc.label,
         type: doc.type,
         date: doc.date,
         status: doc.status,
-        color: typeColors[doc.type],
+        color: typeColors[doc.type] || '#94a3b8',
       },
     };
   });
+
+  const visibleNodeIds = new Set(filteredDocuments.map((doc) => doc.id));
+  const visibleEdges = initialEdges.filter(
+    (edge) => visibleNodeIds.has(edge.source) && visibleNodeIds.has(edge.target)
+  );
 
   return (
     <div className="app">
@@ -163,10 +217,146 @@ export default function App() {
       </header>
 
       <div className="workspace">
+        <aside className="sidebar">
+          <h2>Граф документов</h2>
+
+          <input
+            type="search"
+            className="search-input"
+            placeholder="Найти документ в графе"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+
+          <div className="filters-section">
+            <label className="filter-field">
+              <span>Тип документа</span>
+              <select
+                value={selectedType}
+                onChange={(e) => setSelectedType(e.target.value)}
+              >
+                <option value="all">Все типы</option>
+                {availableTypes.map((type) => (
+                  <option key={type} value={type}>
+                    {type}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="filter-field">
+              <span>Статус обработки</span>
+              <select
+                value={selectedStatus}
+                onChange={(e) => setSelectedStatus(e.target.value)}
+              >
+                <option value="all">Все статусы</option>
+                {Object.entries(stages).map(([key, stage]) => (
+                  <option key={key} value={key}>
+                    {stage.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="filter-field">
+              <span>Дата загрузки</span>
+              <select
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
+              >
+                <option value="all">Все даты</option>
+                {availableDates.map((date) => (
+                  <option key={date} value={date}>
+                    {date}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            {(searchQuery || selectedType !== 'all' || selectedStatus !== 'all' || selectedDate !== 'all') && (
+              <button
+                type="button"
+                className="reset-filters-button"
+                onClick={() => {
+                  setSearchQuery('');
+                  setSelectedType('all');
+                  setSelectedStatus('all');
+                  setSelectedDate('all');
+                }}
+              >
+                Сбросить фильтры
+              </button>
+            )}
+          </div>
+
+          {apiError && (
+            <div className="api-warning">
+              {apiError} Показаны локальные данные.
+            </div>
+          )}
+
+          <div className="document-list-section">
+            <span className="section-caption">
+              Список документов ({filteredDocuments.length})
+            </span>
+
+            {filteredDocuments.length > 0 ? (
+              <div className="document-list">
+                {filteredDocuments.map((doc) => {
+                  const stage = stages[doc.status] || stages.queued;
+                  const isActive = ['processing', 'recognizing', 'analyzing'].includes(doc.status);
+
+                  return (
+                    <button
+                      key={doc.id}
+                      type="button"
+                      className={`document-list-item ${selectedId === doc.id ? 'document-list-item-selected' : ''}`}
+                      onClick={() => setSelectedId(doc.id)}
+                    >
+                      <div className="document-list-top">
+                        <span
+                          className="document-node-dot"
+                          style={{ background: typeColors[doc.type] || '#94a3b8' }}
+                        />
+                        <span className="document-list-type">{doc.type}</span>
+                        <span className="document-list-date">{doc.date}</span>
+                      </div>
+                      <div className="document-list-title">{doc.label}</div>
+                      <div className="document-list-status" style={{ color: stage.color }}>
+                        <span className={`status-dot ${isActive ? 'status-dot-active' : ''}`} />
+                        {stage.label}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            ) : (
+            <div className="empty-state">
+              <p>Выбери документ в списке или на графе, чтобы посмотреть статус обработки.</p>
+              <p>Цветная метка у каждого документа показывает его текущее состояние.</p>
+            </div>
+            )}
+          </div>
+
+          <div className="graph-summary">
+            <span className="graph-summary-title">В текущем графе</span>
+            <div className="graph-summary-stats">
+              <div>
+                <strong>{filteredDocuments.length}</strong>
+                <span>документов</span>
+              </div>
+              <div>
+                <strong>{visibleEdges.length}</strong>
+                <span>связей</span>
+              </div>
+            </div>
+          </div>
+        </aside>
         <div className="graph">
           <ReactFlow
             nodes={nodes}
-            edges={initialEdges}
+            edges={visibleEdges}
             nodeTypes={nodeTypes}
             fitView
             fitViewOptions={{ padding: 0.2 }}
@@ -208,7 +398,7 @@ export default function App() {
                 </strong>
               </div>
 
-              {['recognizing', 'analyzing'].includes(selectedDocument.status) && (
+              {['processing', 'recognizing', 'analyzing'].includes(selectedDocument.status) && (
                 <div className="progress-section">
                   <div className="progress-heading">
                     <span>Ход обработки</span>
