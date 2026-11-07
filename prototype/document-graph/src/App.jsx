@@ -1,3 +1,4 @@
+import mockGraph from './data/mockGraph.json';
 import { useState, useEffect } from 'react';
 import {
   ReactFlow,
@@ -6,6 +7,7 @@ import {
   MiniMap,
   Handle,
   Position,
+  useNodesState,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import './App.css';
@@ -31,18 +33,7 @@ const stages = {
   error: { label: 'Ошибка обработки', color: '#f87171', progress: 0 },
 };
 
-const initialDocuments = [
-  { id: '1', label: 'Договор № 123', type: 'Договор', date: '01.09.2026', description: 'Договор на поставку компьютерного оборудования.', status: 'completed' },
-  { id: '2', label: 'Спецификация № 1', type: 'Спецификация', date: '01.09.2026', description: 'Перечень оборудования и согласованные цены.', status: 'analyzing' },
-  { id: '3', label: 'Счёт № 45', type: 'Счёт', date: '03.09.2026', description: 'Счёт на оплату поставки по договору № 123.', status: 'recognizing' },
-  { id: '4', label: 'Платёжное поручение № 78', type: 'Платёжное поручение', date: '04.09.2026', description: 'Подтверждение перечисления денежных средств.', status: 'queued' },
-  { id: '5', label: 'Накладная № 56', type: 'Накладная', date: '07.09.2026', description: 'Документ о передаче оборудования покупателю.', status: 'error' },
-  { id: '6', label: 'Акт приёмки № 17', type: 'Акт', date: '07.09.2026', description: 'Подтверждение приёмки оборудования.', status: 'completed' },
-  { id: '7', label: 'Счёт-фактура № 91', type: 'Счёт-фактура', date: '07.09.2026', description: 'Документ по НДС для поставленной продукции.', status: 'queued' },
-  { id: '8', label: 'Письмо № 12', type: 'Письмо', date: '08.09.2026', description: 'Согласование даты поставки с контрагентом.', status: 'completed' },
-  { id: '9', label: 'Доп. соглашение № 2', type: 'Доп. соглашение', date: '05.09.2026', description: 'Уточнение условий поставки.', status: 'analyzing' },
-  { id: '10', label: 'Акт сверки № 4', type: 'Акт сверки', date: '10.09.2026', description: 'Сверка взаиморасчётов между сторонами.', status: 'completed' },
-];
+const initialDocuments = mockGraph.documents;
 
 function DocumentNode({ data, selected }) {
   const stage = stages[data.status];
@@ -83,20 +74,44 @@ const positions = [
   { id: '10', x: 1260, y: 220 },
 ];
 
+const initialNodes = positions.map(({ id, x, y }) => {
+  const doc = initialDocuments.find((item) => item.id === id);
 
-const connections = [
-  ['1', '2'], ['1', '3'], ['1', '8'], ['1', '9'],
-  ['2', '3'], ['3', '4'], ['3', '5'], ['5', '6'],
-  ['5', '7'], ['4', '10'], ['6', '10'], ['7', '10'],
-  ['9', '5'], ['8', '5'],
-];
+  return {
+    id,
+    type: 'document',
+    position: { x, y },
+    data: {
+      label: doc.label,
+      type: doc.type,
+      date: doc.date,
+      status: doc.status,
+      color: typeColors[doc.type],
+    },
+  };
+});
 
-const initialEdges = connections.map(([source, target], i) => ({
-  id: `edge-${i + 1}`,
-  source,
-  target,
+const connections = mockGraph.connections;
+
+const initialEdges = connections.map((connection, index) => ({
+  id: `e${index + 1}`,
+  source: connection.source,
+  target: connection.target,
   type: 'smoothstep',
-  style: { stroke: '#8989a0', strokeWidth: 1.5 },
+  label: connection.label,
+  style: {
+    stroke: '#8989a0',
+    strokeWidth: 1.5,
+  },
+  labelStyle: {
+    fill: '#c4c4d4',
+    fontSize: 10,
+  },
+  labelBgStyle: {
+    fill: '#1c1a1d',
+  },
+  labelBgPadding: [4, 3],
+  labelBgBorderRadius: 4,
 }));
 
 function getProgress(status) {
@@ -106,6 +121,8 @@ function getProgress(status) {
 export default function App() {
   const [documents, setDocuments] = useState(initialDocuments);
   const [selectedId, setSelectedId] = useState(null);
+
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
 
   const selectedDocument = documents.find((doc) => doc.id === selectedId);
   const processingCount = documents.filter(
@@ -136,21 +153,27 @@ export default function App() {
     updateStatus(id, 'recognizing');
   };
 
-  const nodes = positions.map(({ id, x, y }) => {
-    const doc = documents.find((item) => item.id === id);
-    return {
-      id,
-      type: 'document',
-      position: { x, y },
-      data: {
-        label: doc.label,
-        type: doc.type,
-        date: doc.date,
-        status: doc.status,
-        color: typeColors[doc.type],
-      },
-    };
-  });
+  useEffect(() => {
+  setNodes((currentNodes) =>
+    currentNodes.map((node) => {
+      const doc = documents.find((item) => item.id === node.id);
+
+      if (!doc) return node;
+
+      return {
+        ...node,
+        data: {
+          ...node.data,
+          label: doc.label,
+          type: doc.type,
+          date: doc.date,
+          status: doc.status,
+          color: typeColors[doc.type],
+        },
+      };
+    })
+  );
+}, [documents, setNodes]);
 
   return (
     <div className="app">
@@ -168,6 +191,7 @@ export default function App() {
             nodes={nodes}
             edges={initialEdges}
             nodeTypes={nodeTypes}
+            onNodesChange={onNodesChange}
             fitView
             fitViewOptions={{ padding: 0.2 }}
             minZoom={0.2}
