@@ -1,0 +1,22 @@
+@host = http://localhost:5000
+@id = 911e8121-15c4-45e0-a114-fd10636e6bc7
+
+### Поставить задачу в очередь
+POST {{host}}/api/tasks
+Content-Type: multipart/form-data; boundary=----Boundary
+
+------Boundary
+Content-Disposition: form-data; name="file"; filename="sample.txt"
+Content-Type: text/plain
+
+hello
+------Boundary--
+
+### Актуальный статус (обнови @id после первого запроса)
+GET {{host}}/api/tasks/{{id}}
+
+### Список всех задач
+GET {{host}}/api/tasks
+
+### 404
+GET {{host}}/api/tasks/00000000-0000-0000-0000-000000000000
