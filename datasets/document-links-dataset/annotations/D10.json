@@ -1,0 +1,13 @@
+{
+  "document_id": "D10",
+  "document_type": "ministerial_order",
+  "number": "24",
+  "date": "2013-03-01",
+  "title": "Об утверждении Порядка ведения списка негосударственных центров бесплатной юридической помощи",
+  "issuer": "Минюст России",
+  "key_fields": {
+    "referenced_documents": ["8-ФЗ"],
+    "cited_by": ["D09"]
+  },
+  "text_path": "documents/D10.txt"
+}

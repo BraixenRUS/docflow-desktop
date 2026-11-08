@@ -1,0 +1,13 @@
+{
+  "document_id": "D17",
+  "document_type": "government_decree",
+  "number": "946",
+  "date": "1992-12-08",
+  "title": "О порядке...",
+  "issuer": "Правительство РФ",
+  "key_fields": {
+    "referenced_documents": ["8-ФЗ"],
+    "cited_by": ["D18"]
+  },
+  "text_path": "documents/D17.txt"
+}

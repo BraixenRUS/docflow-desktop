@@ -1,0 +1,13 @@
+{
+  "document_id": "D03",
+  "document_type": "government_order",
+  "number": "1187-р",
+  "date": "2013-07-10",
+  "title": "О перечнях информации, размещаемой в форме открытых данных",
+  "issuer": "Правительство РФ",
+  "key_fields": {
+    "referenced_documents": ["583"],
+    "cited_by": []
+  },
+  "text_path": "documents/D03.txt"
+}

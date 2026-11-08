@@ -1,0 +1,13 @@
+{
+  "document_id": "D14",
+  "document_type": "ministerial_order",
+  "number": "44",
+  "date": "2018-02-05",
+  "title": "О внесении изменений в некоторые приказы Минэкономразвития России",
+  "issuer": "Минэкономразвития России",
+  "key_fields": {
+    "referenced_documents": ["975"],
+    "cited_by": []
+  },
+  "text_path": "documents/D14.txt"
+}

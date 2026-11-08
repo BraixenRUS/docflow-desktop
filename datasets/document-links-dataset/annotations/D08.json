@@ -1,0 +1,13 @@
+{
+  "document_id": "D08",
+  "document_type": "ministerial_order",
+  "number": "9",
+  "date": "2017-02-01",
+  "title": "Об утверждении порядка ведения федерального регистра",
+  "issuer": "Минюст России",
+  "key_fields": {
+    "referenced_documents": ["657"],
+    "cited_by": ["D07"]
+  },
+  "text_path": "documents/D08.txt"
+}

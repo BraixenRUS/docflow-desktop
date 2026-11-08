@@ -1,0 +1,13 @@
+{
+  "document_id": "D18",
+  "document_type": "federal_law",
+  "number": "52-ФЗ",
+  "date": "1999-03-30",
+  "title": "О санитарно-эпидемиологическом благополучии населения",
+  "issuer": "Государственная Дума РФ",
+  "key_fields": {
+    "referenced_documents": ["946"],
+    "cited_by": ["D19", "D20"]
+  },
+  "text_path": "documents/D18.txt"
+}

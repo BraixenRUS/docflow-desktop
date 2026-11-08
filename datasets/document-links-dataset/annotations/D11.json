@@ -1,0 +1,13 @@
+{
+  "document_id": "D11",
+  "document_type": "ministerial_order",
+  "number": "975",
+  "date": "2015-12-25",
+  "title": "Об утверждении форм выписок из Единого государственного реестра недвижимости",
+  "issuer": "Минэкономразвития России",
+  "key_fields": {
+    "referenced_documents": ["1347"],
+    "cited_by": ["D13", "D14"]
+  },
+  "text_path": "documents/D11.txt"
+}

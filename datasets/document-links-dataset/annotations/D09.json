@@ -1,0 +1,13 @@
+{
+  "document_id": "D09",
+  "document_type": "ministerial_order",
+  "number": "104",
+  "date": "2022-06-27",
+  "title": "Об утверждении Положения о Департаменте конституционного законодательства",
+  "issuer": "Минюст России",
+  "key_fields": {
+    "referenced_documents": ["24", "59-ФЗ"],
+    "cited_by": []
+  },
+  "text_path": "documents/D09.txt"
+}

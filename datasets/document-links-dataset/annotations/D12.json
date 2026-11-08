@@ -1,0 +1,13 @@
+{
+  "document_id": "D12",
+  "document_type": "government_decree",
+  "number": "1347",
+  "date": "2017-11-08",
+  "title": "О проведении эксперимента",
+  "issuer": "Правительство РФ",
+  "key_fields": {
+    "referenced_documents": [],
+    "cited_by": ["D11"]
+  },
+  "text_path": "documents/D12.txt"
+}

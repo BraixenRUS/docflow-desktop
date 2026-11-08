@@ -1,0 +1,13 @@
+{
+  "document_id": "D05",
+  "document_type": "government_decree",
+  "number": "657",
+  "date": "2008-09-10",
+  "title": "О ведении федерального регистра муниципальных нормативных правовых актов",
+  "issuer": "Правительство РФ",
+  "key_fields": {
+    "referenced_documents": ["8-ФЗ"],
+    "cited_by": ["D06", "D08"]
+  },
+  "text_path": "documents/D05.txt"
+}

@@ -1,0 +1,13 @@
+{
+  "document_id": "D19",
+  "document_type": "ministerial_order",
+  "number": "131н",
+  "date": "2018-03-14",
+  "title": "Об утверждении профессионального стандарта «Врач-патологоанатом»",
+  "issuer": "Минтруд России",
+  "key_fields": {
+    "referenced_documents": ["52-ФЗ"],
+    "cited_by": []
+  },
+  "text_path": "documents/D19.txt"
+}

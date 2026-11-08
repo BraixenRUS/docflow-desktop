@@ -1,0 +1,13 @@
+{
+  "document_id": "D15",
+  "document_type": "ministerial_order",
+  "number": "25",
+  "date": "2014-03-03",
+  "title": "Об утверждении Положения о Главном управлении Министерства юстиции Российской Федерации по субъекту (субъектам) Российской Федерации",
+  "issuer": "Минюст России",
+  "key_fields": {
+    "referenced_documents": ["27"],
+    "cited_by": ["D16"]
+  },
+  "text_path": "documents/D15.txt"
+}

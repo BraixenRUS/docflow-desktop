@@ -1,0 +1,13 @@
+{
+  "document_id": "D04",
+  "document_type": "presidential_decree",
+  "number": "601",
+  "date": "2012-05-07",
+  "title": "Об основных направлениях совершенствования системы государственного управления",
+  "issuer": "Президент РФ",
+  "key_fields": {
+    "referenced_documents": ["8-ФЗ"],
+    "cited_by": []
+  },
+  "text_path": "documents/D04.txt"
+}

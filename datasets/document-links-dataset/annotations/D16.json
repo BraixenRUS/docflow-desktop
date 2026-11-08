@@ -1,0 +1,13 @@
+{
+  "document_id": "D16",
+  "document_type": "ministerial_order",
+  "number": "87",
+  "date": "2012-05-31",
+  "title": "Об утверждении Методических рекомендаций",
+  "issuer": "Минюст России",
+  "key_fields": {
+    "referenced_documents": ["25"],
+    "cited_by": []
+  },
+  "text_path": "documents/D16.txt"
+}

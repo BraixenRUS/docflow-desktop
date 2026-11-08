@@ -1,0 +1,13 @@
+{
+  "document_id": "D20",
+  "document_type": "ministerial_order",
+  "number": "425",
+  "date": "2006-07-25",
+  "title": "Об утверждении Норм табельной положенности пожарно-технического вооружения",
+  "issuer": "МЧС России",
+  "key_fields": {
+    "referenced_documents": ["52-ФЗ"],
+    "cited_by": []
+  },
+  "text_path": "documents/D20.txt"
+}

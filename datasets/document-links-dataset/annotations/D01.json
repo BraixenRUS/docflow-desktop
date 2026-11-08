@@ -1,0 +1,13 @@
+{
+  "document_id": "D01",
+  "document_type": "federal_law",
+  "number": "8-ФЗ",
+  "date": "2009-02-09",
+  "title": "Об обеспечении доступа к информации о деятельности государственных органов и органов местного самоуправления",
+  "issuer": "Государственная Дума РФ",
+  "key_fields": {
+    "referenced_documents": ["149-ФЗ"],
+    "cited_by": ["D02", "D04", "D05", "D10", "D17"]
+  },
+  "text_path": "documents/D01.txt"
+}

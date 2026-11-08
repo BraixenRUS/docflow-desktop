@@ -1,0 +1,13 @@
+{
+  "document_id": "D06",
+  "document_type": "government_decree",
+  "number": "327",
+  "date": "2018-03-26",
+  "title": "О внесении изменений в некоторые акты Правительства Российской Федерации по вопросу ведения федеральных регистров и государственных реестров",
+  "issuer": "Правительство РФ",
+  "key_fields": {
+    "referenced_documents": ["657"],
+    "cited_by": []
+  },
+  "text_path": "documents/D06.txt"
+}
